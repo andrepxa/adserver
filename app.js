@@ -11,14 +11,14 @@ mongoose.connect('mongodb://localhost/adnetwork', { useNewUrlParser: true })
 app.set('view engine', 'pug');
 
 app.use(express.urlencoded({ extended: false }));
-app.use(express.json());
 app.use(express.static('public'));
+app.use(express.json());
 
 app.get('/', (req, res) => {
   res.render('console');
 });
 
-app.post('/', async (req, res) => {
+app.post('/', (req, res) => {
   console.log(req.body);
   const { error } = validate(req.body);
   if (error) return res.status(400).send(error.details[0].message);
@@ -30,13 +30,12 @@ app.post('/', async (req, res) => {
     conversionType: req.body.conversionType,
     bid: req.body.bid
   });
-  const result = await campaign.save();
-
-  console.log('result', result);
-  res.render('console', { 
-    message: result ? 'success' : 'fail', 
-    campaign: req.body.campaignName 
-  });
+  campaign.save()
+    .then(result => res.render('console', {
+      message: result ? 'success' : 'fail', 
+      campaign: req.body.campaignName 
+    }))
+    .catch(err => res.status(500).send('Something failed!'));
 });
 
 const port = process.env.PORT || 3000;

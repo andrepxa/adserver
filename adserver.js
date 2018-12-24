@@ -15,15 +15,19 @@ app.get('/fetch', async (req, res) => {
 
   if (!req.query.country) return res.status(400).send('Bad request');
 
-  const campaign = await Campaign
-    .find({ targets: { $in: req.query.country } })
-    .sort('-bid')
-    .limit(1)
-    .select('campaignName advertiser bid conversionType -_id');
- 
-  if (!campaign) return res.status(404).send('There is no campaign available to this country.');
+  try {
+    const campaign = await Campaign
+      .find({ targets: { $in: req.query.country } })
+      .sort('-bid')
+      .limit(1)
+      .select('campaignName advertiser bid conversionType -_id');
 
-  res.send(campaign);
+    if (!campaign) return res.status(404).send('There is no campaign available to this country.');
+
+    res.send(campaign);
+  } catch (err) {
+    res.status(500).send('Something failed.');
+  }
 });
 
 const port = process.env.PORT || 3001;
