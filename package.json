@@ -1,17 +1,16 @@
 {
-  "name": "adnetwork",
+  "name": "adserver",
   "version": "1.0.0",
   "description": "adnetwork project for job's application",
-  "main": "app.js",
+  "main": "adserver.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node adserver.js"
   },
   "author": "paxiega",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.4",
     "joi": "^14.3.0",
-    "mongoose": "^5.4.0",
-    "pug": "^2.0.3"
+    "mongoose": "^5.4.0"
   }
 }
