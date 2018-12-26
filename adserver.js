@@ -22,7 +22,7 @@ app.get('/fetch', async (req, res) => {
       .limit(1)
       .select('campaignName advertiser bid conversionType -_id');
 
-    if (!campaign) return res.status(404).send('There is no campaign available to this country.');
+    if (!campaign || campaign.length === 0) return res.status(404).send('There is no campaign available to this country.');
 
     res.send(campaign);
   } catch (err) {
