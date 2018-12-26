@@ -17,7 +17,7 @@ app.get('/fetch', async (req, res) => {
 
   try {
     const campaign = await Campaign
-      .find({ targets: { $in: req.query.country } })
+      .find({ targets: { $in: req.query.country.toUpperCase() } })
       .sort('-bid')
       .limit(1)
       .select('campaignName advertiser bid conversionType -_id');
