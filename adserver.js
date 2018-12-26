@@ -13,7 +13,7 @@ app.use(express.json());
 app.get('/fetch', async (req, res) => {
   console.log(req.query.country);
 
-  if (!req.query.country) return res.status(400).send('Bad request');
+  if (!req.query.country) return res.status(400).send('Bad request. Valid country parameter required');
 
   try {
     const campaign = await Campaign
@@ -22,7 +22,7 @@ app.get('/fetch', async (req, res) => {
       .limit(1)
       .select('campaignName advertiser bid conversionType -_id');
 
-    if (!campaign || campaign.length === 0) return res.status(404).send('There is no campaign available to this country.');
+    if (!campaign || campaign.length === 0) return res.status(400).send('There is no campaign available for this country.');
 
     res.send(campaign);
   } catch (err) {
